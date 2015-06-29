@@ -4,16 +4,18 @@ var $ = require('jquery');
 var _ = require('underscore');
 var views = require('views');
 var router = require('../router');
+var c3 = require('c3');
 
 router.route('', 'facebook', function () {
-  console.log('no');
   $.ajax({
     url: 'data/facebook.data',
     method: 'GET'
   })
   .then(parseFacebookCsv)
   .then(parseLang)
-  .then(renderFacebook);
+  .then(renderFacebook)
+  .then(countInt);
+  
  
 
   function parseFacebookCsv(FacebookCsv) {
@@ -26,9 +28,45 @@ router.route('', 'facebook', function () {
           sex: cells[24],
           age: cells[25],
           education: cells[26],
-          income: cells[29]
+          income: cells[29],
+          internet_user: cells[9],
+          facebook_user: cells[12]
         };
       });   
+  }
+  
+  function countInt (facebookArray) {
+  $('.chartType').change(function () {
+    if ($('.chartType').val() == "1"){
+        var arr = facebookArray;
+         var Yes = 0;
+          var No  = 0;
+        $.each(arr, function() {
+         
+          if (this.internet_user === "1") {
+              Yes++;
+          }
+          if (this.internet_user == "2") {
+              No++;
+          }
+        }); 
+        console.log(Yes);
+        console.log(No);
+         c3.generate({
+          bindto: '.internet-chart',
+          data: {
+            columns: [
+              ['Yes', Yes],
+              ['No', No],
+            ],
+            type : 'pie'
+          },
+          color: {
+            pattern: ['#3FBEBB', '#FF5843', '#39B54A']
+          }
+        });
+    }
+  });
   }
   
   function parseLang(facebookArray) {
@@ -68,7 +106,6 @@ router.route('', 'facebook', function () {
         this.education = "NA";
     }
 });
-  console.log(arr);
   return arr;
   }
   
@@ -78,5 +115,6 @@ router.route('', 'facebook', function () {
     var facebookHTML = templateFn({ facebooks: facebookArray });
     
     $('.main-content').html(facebookHTML);
+   return facebookArray;
   }
 });
