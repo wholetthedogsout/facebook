@@ -13,8 +13,16 @@ a {
 }
 
 .internet-chart-container{
+	margin-top: 2.5em;
+	right: 0;
+	top: 0;
+	position: fixed;
 	float: right;
 	width: 40%;
 	padding-right: 2em;
 	text-align: center;
+	transition: all 1s;
+	-webkit-transition: all 1s;
+	-o-transition: all 1s;
+	-moz-transition: all 1s;
 }
