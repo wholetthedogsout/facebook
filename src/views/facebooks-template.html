@@ -1,0 +1,13 @@
+<h1>Facebook Stats</h1>
+
+<ul class="user-list">
+  <% m.facebooks.forEach(function (facebook) { %>
+    <li class="facebook">
+      <a href="#facebook/<%- facebook.id %>">
+        <%- facebook.age %>
+        <%- facebook.sex %>
+		    <%- facebook.education %>
+      </a>
+    </li>
+  <% }) %>
+</ul>
